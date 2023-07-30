@@ -40,6 +40,11 @@ async def settings(interaction: discord.Interaction):
     await client.tree.sync(guild=interaction.guild)
 
 
+@client.tree.command()
+async def boop(interaction: discord.Interaction):
+    await interaction.response.send_message("Boop")
+
+
 @client.tree.command(description="Flips a coin")
 async def coin(interaction: discord.Interaction):
     coin = random.choice(["<:Heads:1134851517845884950>", "<:Tails:1134851515954241659>"])
