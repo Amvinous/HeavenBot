@@ -21,6 +21,7 @@ class MyClient(discord.Client):
     async def setup_hook(self):
         self.tree.copy_global_to(guild=MY_GUILD)
         await self.tree.sync(guild=MY_GUILD)
+        await self.tree.sync()
 
 
 intents = discord.Intents.default()
@@ -34,8 +35,8 @@ async def on_ready():
 
 
 @client.tree.command()
-async def settings(interaction: discord.Interaction):
-    await interaction.response.send_message('Settings run')
+async def clear(interaction: discord.Interaction):
+    await interaction.response.send_message('Cleaned commands')
     client.tree.clear_commands(guild=interaction.guild)
     await client.tree.sync(guild=interaction.guild)
 
