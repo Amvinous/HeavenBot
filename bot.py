@@ -6,6 +6,7 @@ import discord
 from discord import app_commands
 from dotenv import load_dotenv
 
+from emotions import emotions
 # ? My modules
 from next_ep import get_episode
 from trending import get_trending
@@ -20,9 +21,7 @@ class MyClient(discord.Client):
         self.tree = app_commands.CommandTree(self)
 
     async def setup_hook(self):
-        self.tree.copy_global_to(guild=MY_GUILD)
         await self.tree.sync(guild=MY_GUILD)
-        await self.tree.sync()
 
 
 intents = discord.Intents.default()
@@ -39,10 +38,13 @@ async def on_ready():
 
 @client.tree.command()
 # + Clears commands synced to guild
-async def clear(interaction: discord.Interaction):
-    await interaction.response.send_message('Cleaned commands')
-    client.tree.clear_commands(guild=interaction.guild)
-    await client.tree.sync(guild=interaction.guild)
+async def sync(interaction: discord.Interaction):
+    if interaction.user == 1039558370765574175:
+        await interaction.response.send_message('Synced commands')
+        client.tree.clear_commands(guild=interaction.guild)
+        await client.tree.sync(guild=interaction.guild)
+    else:
+        await interaction.response.send_message(content="You're not Ambi", ephemeral=True)
 
 
 @client.tree.command()
@@ -144,6 +146,26 @@ async def sticker(interaction: discord.Interaction, message_id: str):
                 url=sticker)
 
     await interaction.response.send_message(embed=embed)
+
+
+@client.tree.command()
+async def slap(interaction: discord.Interaction,
+                member: discord.Member = None):
+    # + Change this for another emotion
+    emotion = emotions("slap")
+    # + Change this for another color
+    embed = discord.Embed(colour=0xFFFFFF)
+    author = interaction.user
+
+    if member is None:
+        member = author
+
+    embed.set_image(url=emotion)
+    # + Change value for different message
+    embed.add_field(name="\n",
+                    value=f'{author.name} slapped {member}')
+
+    await interaction.response.send_message(embed=embed, content=f"{member.mention}")
 
 
 load_dotenv()
