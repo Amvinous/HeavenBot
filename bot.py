@@ -6,13 +6,11 @@ import discord
 from discord import app_commands
 from dotenv import load_dotenv
 
-from emotions import emotions
 # ? My modules
-from next_ep import get_episode
-from trending import get_trending
+from queries import *
 
 # + Test Guild/My Server
-MY_GUILD = discord.Object(id=1110874535156269157)
+MY_GUILD = discord.Object(id=465894931139919883)  # 1110874535156269157)
 
 
 class MyClient(discord.Client):
@@ -23,6 +21,7 @@ class MyClient(discord.Client):
     async def setup_hook(self):
         self.tree.copy_global_to(guild=MY_GUILD)
         await self.tree.sync(guild=MY_GUILD)
+        await self.tree.sync()
 
 
 intents = discord.Intents.default()
@@ -39,9 +38,9 @@ async def on_ready():
 
 @client.tree.command()
 # + Clears commands synced to guild
-async def sync(interaction: discord.Interaction):
-    if interaction.user == 1039558370765574175:
-        await interaction.response.send_message('Synced commands')
+async def clear(interaction: discord.Interaction):
+    if interaction.user.id == 1039558370765574175:
+        await interaction.response.send_message('Cleared commands')
         client.tree.clear_commands(guild=interaction.guild)
         await client.tree.sync(guild=interaction.guild)
     else:
@@ -132,6 +131,7 @@ async def trending(interaction: discord.Interaction):
 @client.tree.command(
     name="sticker",
     description="Gets Sticker from message ID")
+@app_commands.rename(message_id="id")
 async def sticker(interaction: discord.Interaction, message_id: str):
     message_content = await interaction.channel.fetch_message(int(message_id))
 
@@ -150,8 +150,7 @@ async def sticker(interaction: discord.Interaction, message_id: str):
 
 
 @client.tree.command()
-async def slap(interaction: discord.Interaction,
-                member: discord.Member = None):
+async def slap(interaction: discord.Interaction, member: discord.Member = None):
     # + Change this for another emotion
     emotion = emotions("slap")
     # + Change this for another color
@@ -165,6 +164,63 @@ async def slap(interaction: discord.Interaction,
     # + Change value for different message
     embed.add_field(name="\n",
                     value=f'{author.name} slapped {member}')
+
+    await interaction.response.send_message(embed=embed, content=f"{member.mention}")
+
+
+@client.tree.command()
+async def hug(interaction: discord.Interaction, member: discord.Member = None):
+    # + Change this for another emotion
+    emotion = emotions("hug")
+    # + Change this for another color
+    embed = discord.Embed(colour=0xFFFFFF)
+    author = interaction.user
+
+    if member is None:
+        member = author
+
+    embed.set_image(url=emotion)
+    # + Change value for different message
+    embed.add_field(name="\n",
+                    value=f'{author.name} hugged {member}')
+
+    await interaction.response.send_message(embed=embed, content=f"{member.mention}")
+
+
+@client.tree.command()
+async def kiss(interaction: discord.Interaction, member: discord.Member = None):
+    # + Change this for another emotion
+    emotion = emotions("kiss")
+    # + Change this for another color
+    embed = discord.Embed(colour=0xFFFFFF)
+    author = interaction.user
+
+    if member is None:
+        member = author
+
+    embed.set_image(url=emotion)
+    # + Change value for different message
+    embed.add_field(name="\n",
+                    value=f'{author.name} kissed {member}')
+
+    await interaction.response.send_message(embed=embed, content=f"{member.mention}")
+
+
+@client.tree.command(nsfw=True)
+async def quickie(interaction: discord.Interaction, member: discord.Member = None):
+    # + Change this for another emotion
+    emotion = emotions("blowjob", "nsfw")
+    # + Change this for another color
+    embed = discord.Embed(colour=0xFFFFFF)
+    author = interaction.user
+
+    if member is None:
+        member = author
+
+    embed.set_image(url=emotion)
+    # + Change value for different message
+    embed.add_field(name="\n",
+                    value=f'{author.name} gave {member} a quickie')
 
     await interaction.response.send_message(embed=embed, content=f"{member.mention}")
 
