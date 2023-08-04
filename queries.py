@@ -1,7 +1,6 @@
 import requests as rq
 
 
-# + get next episode
 def get_episode(anime):
     query = """query ($search: String) {
       Media(type: ANIME, search: $search, status_in: [RELEASING, NOT_YET_RELEASED]) {
@@ -44,7 +43,6 @@ def get_episode(anime):
     return processed_data
 
 
-# + get trending anime
 def get_trending():
     animeset = []
     query = """{
@@ -78,7 +76,6 @@ def get_trending():
     return animeset
 
 
-# + get reactions
 def emotions(emotion, type="sfw"):
     response = rq.get(f'https://api.waifu.pics/{type}/{emotion}')
     url = response.json()["url"]
