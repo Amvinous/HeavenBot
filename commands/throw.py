@@ -36,3 +36,6 @@ class Throw(app_commands.Group):
             text=f'Sum: {dice_sum}')
 
         await interaction.response.send_message(embed=embed)
+
+
+group = Throw(name="throw")

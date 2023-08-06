@@ -5,7 +5,7 @@ from queries import emotions
 
 
 class Emote(app_commands.Group):
-    @app_commands.command()
+    @app_commands.command(description="slap someone")
     async def slap(self, interaction: discord.Interaction, member: discord.Member = None):
         author = interaction.user
         if member is None:
@@ -22,7 +22,7 @@ class Emote(app_commands.Group):
 
         await interaction.response.send_message(embed=embed, content=f"{member.mention}")
 
-    @app_commands.command()
+    @app_commands.command(description="cuddle someone")
     async def cuddle(self, interaction: discord.Interaction, member: discord.Member = None):
         author = interaction.user
         if member is None:
@@ -39,7 +39,7 @@ class Emote(app_commands.Group):
 
         await interaction.response.send_message(embed=embed, content=f"{member.mention}")
 
-    @app_commands.command()
+    @app_commands.command(description="hug someone")
     async def hug(self, interaction: discord.Interaction, member: discord.Member = None):
         author = interaction.user
         if member is None:
@@ -56,7 +56,7 @@ class Emote(app_commands.Group):
 
         await interaction.response.send_message(embed=embed, content=f"{member.mention}")
 
-    @app_commands.command()
+    @app_commands.command(description="kiss someone")
     async def kiss(self, interaction: discord.Interaction, member: discord.Member = None):
         author = interaction.user
         if member is None:
@@ -73,7 +73,7 @@ class Emote(app_commands.Group):
 
         await interaction.response.send_message(embed=embed, content=f"{member.mention}")
 
-    @app_commands.command()
+    @app_commands.command(description="bully someone")
     async def bully(self, interaction: discord.Interaction, member: discord.Member = None):
         author = interaction.user
         if member is None:
@@ -89,3 +89,6 @@ class Emote(app_commands.Group):
                         value=f'{author.name} bonked {member}')
 
         await interaction.response.send_message(embed=embed, content=f"{member.mention}")
+
+
+group = Emote(name="emote")

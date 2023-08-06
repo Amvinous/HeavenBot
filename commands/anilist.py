@@ -26,6 +26,8 @@ class Anilist(app_commands.Group):
         embed.add_field(
             name=f' Episode: {data["next episode"]}/{data["total episodes"]}\n',
             value=f'<t:{data["unix"]}:F>')
+        if data["title"] == "ONE PIECE":
+            embed.add_field(name="", inline=True, value="<:gear5:1137738300707328092>")
 
         await interaction.response.send_message(embed=embed)
 
@@ -41,3 +43,6 @@ class Anilist(app_commands.Group):
                 value=f'<t:{anime["unix"]}>')
 
         await interaction.response.send_message(embed=embed)
+
+
+group = Anilist(name="anilist")
